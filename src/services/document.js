@@ -49,7 +49,10 @@ const documentService = {
 
     const result = await Document.findOneAndUpdate(
       { _id: id },
-      { $set: { title, description, keywords, category: categoryId } }
+      {
+        $set: { title, description, keywords, category: categoryId },
+        $inc: { version: 1 },
+      }
     );
 
     if (!result) throw new NotFoundError("Document not found");
