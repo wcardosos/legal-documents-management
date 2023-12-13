@@ -27,6 +27,8 @@ const DocumentSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+DocumentSchema.index({ title: 1, keywords: 1 });
+
 const Document = mongoose.model("Document", DocumentSchema);
 
 module.exports = Document;
