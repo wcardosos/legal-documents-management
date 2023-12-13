@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  jurisoft-mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: jurisoft
+      MONGO_INITDB_ROOT_PASSWORD: jurisoft
+      MONGO_INIT_DB_DATABASE: legal-documents
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data/mongo:/data/mongodb
