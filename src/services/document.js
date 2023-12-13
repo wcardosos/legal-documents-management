@@ -43,6 +43,29 @@ const documentService = {
 
     return document;
   },
+  update: async ({ id, title, description, keywords, categoryId }) => {
+    const category = await Category.findById(categoryId);
+    if (!category) throw new NotFoundError("Category not found");
+
+    const result = await Document.findOneAndUpdate(
+      { _id: id },
+      { $set: { title, description, keywords, category: categoryId } }
+    );
+
+    if (!result) throw new NotFoundError("Document not found");
+
+    if (result.category.toString() !== categoryId) {
+      const previousCategory = await Category.findById(result.category);
+
+      category.documents.push(id);
+      await category.save();
+
+      previousCategory.documents = previousCategory.documents.filter(
+        (documentId) => documentId.toString() !== id
+      );
+      await previousCategory.save();
+    }
+  },
   delete: async (id) => {
     const result = await Document.deleteOne({ _id: id });
 

@@ -54,6 +54,35 @@ const documentsController = {
       next(error);
     }
   },
+  update: async (req, res, next) => {
+    try {
+      const updateDocumentBodySchema = z.object({
+        title: z.string(),
+        description: z.string(),
+        keywords: z.array(z.string()),
+        categoryId: z.string(),
+      });
+      const updateDocumentParamSchema = z.object({
+        documentId: z.string(),
+      });
+
+      const { title, description, keywords, categoryId } =
+        updateDocumentBodySchema.parse(req.body);
+      const { documentId } = updateDocumentParamSchema.parse(req.params);
+
+      await documentService.update({
+        id: documentId,
+        title,
+        description,
+        keywords,
+        categoryId,
+      });
+
+      return res.sendStatus(202);
+    } catch (error) {
+      next(error);
+    }
+  },
   destroy: async (req, res, next) => {
     try {
       const destroyDocumentParamSchema = z.object({
