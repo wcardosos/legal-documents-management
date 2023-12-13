@@ -43,6 +43,12 @@ const documentService = {
 
     return document;
   },
+  delete: async (id) => {
+    const result = await Document.deleteOne({ _id: id });
+
+    if (result.deletedCount === 0)
+      throw new NotFoundError("Document not found");
+  },
 };
 
 module.exports = documentService;

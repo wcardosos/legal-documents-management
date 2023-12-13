@@ -54,6 +54,21 @@ const documentsController = {
       next(error);
     }
   },
+  destroy: async (req, res, next) => {
+    try {
+      const destroyDocumentParamSchema = z.object({
+        documentId: z.string(),
+      });
+
+      const { documentId } = destroyDocumentParamSchema.parse(req.params);
+
+      await documentService.delete(documentId);
+
+      return res.sendStatus(202);
+    } catch (error) {
+      next(error);
+    }
+  },
 };
 
 module.exports = documentsController;

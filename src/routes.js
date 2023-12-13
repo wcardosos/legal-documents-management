@@ -15,6 +15,7 @@ routes.post("/login", authController.login);
 routes.post("/documents", documentsController.store);
 routes.get("/documents", documentsController.index);
 routes.get("/documents/:documentId", documentsController.show);
+routes.delete("/documents/:documentId", documentsController.destroy);
 
 routes.get("/categories", categoriesController.index);
 
