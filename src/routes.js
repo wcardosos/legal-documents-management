@@ -1,6 +1,7 @@
 const express = require("express");
 const authController = require("./controllers/auth");
 const categoriesController = require("./controllers/categories");
+const documentsController = require("./controllers/documents");
 
 const routes = express.Router();
 
@@ -10,6 +11,8 @@ routes.get("/", (req, res) => {
 
 routes.post("/signup", authController.signUp);
 routes.post("/login", authController.login);
+
+routes.post("/documents", documentsController.store);
 
 routes.get("/categories", categoriesController.index);
 
