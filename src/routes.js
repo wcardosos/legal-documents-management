@@ -1,5 +1,6 @@
 const express = require("express");
 const authController = require("./controllers/auth");
+const categoriesController = require("./controllers/categories");
 
 const routes = express.Router();
 
@@ -9,6 +10,8 @@ routes.get("/", (req, res) => {
 
 routes.post("/signup", authController.signUp);
 routes.post("/login", authController.login);
+
+routes.get("/categories", categoriesController.fetchAll);
 
 module.exports = {
   routes,
