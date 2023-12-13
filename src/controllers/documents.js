@@ -28,6 +28,17 @@ const documentsController = {
       next(error);
     }
   },
+  index: async (req, res, next) => {
+    try {
+      const { id: lawyerId } = req.user;
+
+      const documents = await documentService.fetchAllByLawyerId(lawyerId);
+
+      return res.json(documents);
+    } catch (error) {
+      next(error);
+    }
+  },
 };
 
 module.exports = documentsController;

@@ -28,6 +28,13 @@ const documentService = {
     category.documents.push(newDocument._id);
     await category.save();
   },
+  fetchAllByLawyerId: async (lawyerId) => {
+    const documentsFromLawyer = await Document.find({
+      lawyer: lawyerId,
+    });
+
+    return documentsFromLawyer;
+  },
 };
 
 module.exports = documentService;

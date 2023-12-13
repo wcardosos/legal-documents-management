@@ -13,6 +13,7 @@ routes.post("/signup", authController.signUp);
 routes.post("/login", authController.login);
 
 routes.post("/documents", documentsController.store);
+routes.get("/documents", documentsController.index);
 
 routes.get("/categories", categoriesController.index);
 
