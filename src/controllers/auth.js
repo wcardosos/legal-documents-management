@@ -19,6 +19,23 @@ const authController = {
       next(error);
     }
   },
+
+  login: async (req, res, next) => {
+    try {
+      const loginBodySchema = z.object({
+        email: z.string().email(),
+        password: z.string(),
+      });
+
+      const { email, password } = loginBodySchema.parse(req.body);
+
+      const { token } = await authService.login({ email, password });
+
+      return res.json({ token });
+    } catch (error) {
+      next(error);
+    }
+  },
 };
 
 module.exports = authController;

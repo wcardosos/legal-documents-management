@@ -22,6 +22,24 @@ const authService = {
 
     return { token };
   },
+
+  login: async ({ email, password }) => {
+    const lawyer = await Lawyer.findOne({ email });
+
+    if (!lawyer)
+      throw new UnauthorizedError(`Lawyer with email ${email} was not found`);
+
+    const isPasswordsMatch = await hashManager.compare(
+      password,
+      lawyer.password
+    );
+
+    if (!isPasswordsMatch) throw new UnauthorizedError("Incorrect password");
+
+    const token = authenticator.generateToken(lawyer._id);
+
+    return { token };
+  },
 };
 
 module.exports = authService;
