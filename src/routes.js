@@ -11,7 +11,7 @@ routes.get("/", (req, res) => {
 routes.post("/signup", authController.signUp);
 routes.post("/login", authController.login);
 
-routes.get("/categories", categoriesController.fetchAll);
+routes.get("/categories", categoriesController.index);
 
 module.exports = {
   routes,

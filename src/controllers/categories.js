@@ -1,7 +1,7 @@
 const categoryService = require("../services/category");
 
 const categoriesController = {
-  fetchAll: async (req, res, next) => {
+  index: async (req, res, next) => {
     try {
       const { categories } = await categoryService.fetchAll();
 
