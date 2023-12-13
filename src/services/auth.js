@@ -2,6 +2,7 @@ const Lawyer = require("../models/lawyer");
 const hashManager = require("../lib/hash-manager");
 const authenticator = require("../lib/authenticator");
 const BadRequestError = require("../errors/bad-request");
+const UnauthorizedError = require("../errors/unauthorized");
 
 const authService = {
   signUp: async ({ name, email, password }) => {
