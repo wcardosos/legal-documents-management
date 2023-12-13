@@ -35,6 +35,14 @@ const documentService = {
 
     return documentsFromLawyer;
   },
+
+  fetchById: async (id) => {
+    const document = await Document.findById(id);
+
+    if (!document) throw new NotFoundError("Document not found");
+
+    return document;
+  },
 };
 
 module.exports = documentService;

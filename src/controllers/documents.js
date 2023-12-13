@@ -39,6 +39,21 @@ const documentsController = {
       next(error);
     }
   },
+  show: async (req, res, next) => {
+    try {
+      const showDocumentParamSchema = z.object({
+        documentId: z.string(),
+      });
+
+      const { documentId } = showDocumentParamSchema.parse(req.params);
+
+      const document = await documentService.fetchById(documentId);
+
+      return res.json(document);
+    } catch (error) {
+      next(error);
+    }
+  },
 };
 
 module.exports = documentsController;
