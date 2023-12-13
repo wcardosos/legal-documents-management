@@ -10,7 +10,7 @@ const connectDB = async () => {
     console.log("Database connection was successfully established");
 
     Document.syncIndexes();
-    console.log("Collections indexes was successfully created");
+    console.log("Collections indexes was successfully sync");
   } catch (error) {
     console.error("Error while trying to connect on database:", error.message);
     process.exit(1);
