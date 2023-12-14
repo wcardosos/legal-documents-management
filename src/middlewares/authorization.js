@@ -1,7 +1,8 @@
 const UnauthorizedError = require("../errors/unauthorized");
 const authenticator = require("../lib/authenticator");
+const Lawyer = require("../models/lawyer");
 
-function authorize(req, res, next) {
+async function authorize(req, res, next) {
   if (req.path === "/signup" || req.path === "/login") {
     next();
     return;
@@ -13,6 +14,11 @@ function authorize(req, res, next) {
 
   try {
     const authenticatedLawyerData = authenticator.getTokenInformation(token);
+
+    const lawyer = await Lawyer.findById(authenticatedLawyerData.id);
+
+    if (!lawyer || lawyer.password !== authenticatedLawyerData.passwordHash)
+      throw new UnauthorizedError("Invalid token provided");
 
     req.user = authenticatedLawyerData;
 

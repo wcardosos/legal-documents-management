@@ -19,7 +19,10 @@ const authService = {
       password: await hashManager.encrypt(password),
     });
 
-    const token = authenticator.generateToken(newLawyer._id);
+    const token = authenticator.generateToken(
+      newLawyer._id,
+      newLawyer.password
+    );
 
     return { token };
   },
@@ -37,7 +40,7 @@ const authService = {
 
     if (!isPasswordsMatch) throw new UnauthorizedError("Incorrect password");
 
-    const token = authenticator.generateToken(lawyer._id);
+    const token = authenticator.generateToken(lawyer._id, lawyer.password);
 
     return { token };
   },

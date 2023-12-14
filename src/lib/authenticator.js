@@ -1,10 +1,11 @@
 const jwt = require("jsonwebtoken");
 
 const authenticator = {
-  generateToken: (lawyerId) => {
+  generateToken: (lawyerId, passwordHash) => {
     const token = jwt.sign(
       {
         id: lawyerId,
+        passwordHash,
       },
       process.env.JWT_KEY,
       { expiresIn: "7d" }
@@ -14,9 +15,10 @@ const authenticator = {
   },
 
   getTokenInformation: (token) => {
-    const payload = jwt.verify(token, process.env.JWT_KEY);
+    const { id, passwordHash } = jwt.verify(token, process.env.JWT_KEY);
     return {
-      id: payload.id,
+      id,
+      passwordHash,
     };
   },
 };
