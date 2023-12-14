@@ -6,10 +6,6 @@ const DocumentHistorySchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    type: {
-      type: String,
-      required: true,
-    },
     document: { type: mongoose.Schema.Types.ObjectId, ref: "Document" },
   },
   { timestamps: true }

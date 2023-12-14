@@ -1,6 +1,7 @@
 const Lawyer = require("../models/lawyer");
 const Category = require("../models/category");
 const Document = require("../models/document");
+const DocumentHistory = require("../models/document-history");
 const NotFoundError = require("../errors/not-found");
 
 const documentService = {
@@ -27,6 +28,23 @@ const documentService = {
 
     category.documents.push(newDocument._id);
     await category.save();
+
+    const createDocumentHistory = await DocumentHistory.create({
+      description: `The document was created on ${newDocument.createdAt.toLocaleString(
+        "pt-BR",
+        {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        }
+      )}`,
+      document: newDocument._id,
+    });
+
+    newDocument.documentHistories.push(createDocumentHistory._id);
+    newDocument.save();
   },
   fetchAllByLawyerId: async (lawyerId) => {
     const documentsFromLawyer = await Document.find({
@@ -47,7 +65,7 @@ const documentService = {
     const category = await Category.findById(categoryId);
     if (!category) throw new NotFoundError("Category not found");
 
-    const result = await Document.findOneAndUpdate(
+    const documentBeforeUpdate = await Document.findOneAndUpdate(
       { _id: id },
       {
         $set: { title, description, keywords, category: categoryId },
@@ -55,10 +73,12 @@ const documentService = {
       }
     );
 
-    if (!result) throw new NotFoundError("Document not found");
+    if (!documentBeforeUpdate) throw new NotFoundError("Document not found");
 
-    if (result.category.toString() !== categoryId) {
-      const previousCategory = await Category.findById(result.category);
+    if (documentBeforeUpdate.category.toString() !== categoryId) {
+      const previousCategory = await Category.findById(
+        documentBeforeUpdate.category
+      );
 
       category.documents.push(id);
       await category.save();
@@ -68,6 +88,30 @@ const documentService = {
       );
       await previousCategory.save();
     }
+
+    const createDocumentHistory = await DocumentHistory.create({
+      description: `The document was updated on ${new Date().toLocaleString(
+        "pt-BR",
+        {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+        }
+      )}`,
+      document: id,
+    });
+
+    await Document.updateOne(
+      { id },
+      {
+        documentHistories: [
+          ...documentBeforeUpdate.documentHistories,
+          createDocumentHistory._id,
+        ],
+      }
+    );
   },
   delete: async (id) => {
     const result = await Document.deleteOne({ _id: id });
