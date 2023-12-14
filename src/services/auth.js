@@ -37,9 +37,6 @@ const authService = {
       lawyer.password
     );
 
-    console.log(`password provided: ${password}`);
-    console.log(`password hash: ${lawyer.password}`);
-
     if (!isPasswordsMatch) throw new UnauthorizedError("Incorrect password");
 
     const token = authenticator.generateToken(lawyer._id, lawyer.password);

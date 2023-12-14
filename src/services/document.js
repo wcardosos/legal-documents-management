@@ -5,14 +5,23 @@ const DocumentHistory = require("../models/document-history");
 const NotFoundError = require("../errors/not-found");
 
 const documentService = {
-  create: async ({ title, description, keywords, lawyerId, categoryId }) => {
+  getLawyer: async (lawyerId) => {
     const lawyer = await Lawyer.findById(lawyerId);
 
     if (!lawyer) throw new NotFoundError("Lawyer not found");
 
+    return lawyer;
+  },
+  getCategory: async (categoryId) => {
     const category = await Category.findById(categoryId);
 
     if (!category) throw new NotFoundError("Category not found");
+
+    return category;
+  },
+  create: async ({ title, description, keywords, lawyerId, categoryId }) => {
+    const lawyer = await documentService.getLawyer(lawyerId);
+    const category = await documentService.getCategory(categoryId);
 
     const newDocument = await Document.create({
       title,
@@ -62,8 +71,7 @@ const documentService = {
     return document;
   },
   update: async ({ id, title, description, keywords, categoryId }) => {
-    const category = await Category.findById(categoryId);
-    if (!category) throw new NotFoundError("Category not found");
+    const category = await documentService.getCategory(categoryId);
 
     const documentBeforeUpdate = await Document.findOneAndUpdate(
       { _id: id },
