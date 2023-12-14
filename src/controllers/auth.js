@@ -36,6 +36,23 @@ const authController = {
       next(error);
     }
   },
+  changePassword: async (req, res, next) => {
+    try {
+      const changePasswordBodySchema = z.object({
+        newPassword: z.string(),
+      });
+
+      const { newPassword } = changePasswordBodySchema.parse(req.body);
+
+      const { id: lawyerId } = req.user;
+
+      await authService.changePassword(lawyerId, newPassword);
+
+      return res.sendStatus(202);
+    } catch (error) {
+      next(error);
+    }
+  },
 };
 
 module.exports = authController;

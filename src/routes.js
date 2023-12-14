@@ -11,6 +11,7 @@ routes.get("/", (req, res) => {
 
 routes.post("/signup", authController.signUp);
 routes.post("/login", authController.login);
+routes.patch("/change-password", authController.changePassword);
 
 routes.post("/documents", documentsController.store);
 routes.get("/documents", documentsController.index);

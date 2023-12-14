@@ -26,7 +26,6 @@ const authService = {
 
     return { token };
   },
-
   login: async ({ email, password }) => {
     const lawyer = await Lawyer.findOne({ email });
 
@@ -38,11 +37,21 @@ const authService = {
       lawyer.password
     );
 
+    console.log(`password provided: ${password}`);
+    console.log(`password hash: ${lawyer.password}`);
+
     if (!isPasswordsMatch) throw new UnauthorizedError("Incorrect password");
 
     const token = authenticator.generateToken(lawyer._id, lawyer.password);
 
     return { token };
+  },
+  changePassword: async (lawyerId, newPassword) => {
+    const newPasswordEncrypted = await hashManager.encrypt(newPassword);
+
+    await Lawyer.findByIdAndUpdate(lawyerId, {
+      password: newPasswordEncrypted,
+    });
   },
 };
 
