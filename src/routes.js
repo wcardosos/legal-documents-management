@@ -15,6 +15,7 @@ routes.post("/login", authController.login);
 routes.post("/documents", documentsController.store);
 routes.get("/documents", documentsController.index);
 routes.get("/documents/:documentId", documentsController.show);
+routes.get("/documents/:documentId/history", documentsController.history);
 routes.put("/documents/:documentId", documentsController.update);
 routes.delete("/documents/:documentId", documentsController.destroy);
 

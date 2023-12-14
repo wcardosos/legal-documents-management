@@ -119,6 +119,11 @@ const documentService = {
     if (result.deletedCount === 0)
       throw new NotFoundError("Document not found");
   },
+  fetchHistory: async (id) => {
+    const documentHistory = await DocumentHistory.find({ document: id });
+
+    return documentHistory;
+  },
 };
 
 module.exports = documentService;

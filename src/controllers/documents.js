@@ -98,6 +98,21 @@ const documentsController = {
       next(error);
     }
   },
+  history: async (req, res, next) => {
+    try {
+      const documentHistoryParamsSchema = z.object({
+        documentId: z.string(),
+      });
+
+      const { documentId } = documentHistoryParamsSchema.parse(req.params);
+
+      const documentHistory = await documentService.fetchHistory(documentId);
+
+      return res.json(documentHistory);
+    } catch (error) {
+      next(error);
+    }
+  },
 };
 
 module.exports = documentsController;
